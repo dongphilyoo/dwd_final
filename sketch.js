@@ -58,12 +58,12 @@ function draw(){
     if (keyIsDown(RIGHT_ARROW)) {
         console.log('right');
         console.log(dummies[dummies.length - 1]);
-        dummies[dummies.length - 1].x += random(3);
+        dummies[dummies.length - 1].x += random(9);
     }
     if (keyIsDown(LEFT_ARROW)) {
         console.log('left');
         console.log(dummies[dummies.length - 1]);
-        dummies[dummies.length - 1].x -= random(3);
+        dummies[dummies.length - 1].x -= random(9);
     }
     if (keyIsDown(ENTER)) {
         console.log(dummies[dummies.length - 1]);

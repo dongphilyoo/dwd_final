@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *,
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            opacity: 1;
+            transition: 2s opacity;
+        }
+
+        body.fade-out {
+            opacity: 0;
+            transition: none;
+        }
+
+    </style>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.sound.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
+    <script src="sketch.js"></script>
+</head>
+
+<body id="body">
+
+    <script>
+        var socket = io.connect();
+
+        socket.on('connect', function() {
+            console.log("Connected");
+        });
+
+        // Receive from any event
+        socket.on('chatmessage', function(data) {
+            console.log(data);
+            document.getElementById('messages').innerHTML = "" + data +
+                +"" + document.getElementById('messages').innerHTML;
+        });
+
+        var sendmessage = function(message) {
+            console.log("chatmessage: " + message);
+            socket.emit('chatmessage', message);
+        };
+
+    </script>
+
+    <div id="messages">
+        No Messages Yet
+    </div>
+    <input type="text" id="message" name="message">
+    <input type="submit" value="submit" onclick="sendmessage(document.getElementById('message').value);">
+
+</body>
+
+</html>

@@ -23,7 +23,6 @@ function setup() {
             //            ellipse(data.x, data.y, 80, 80);
 
 
-
             var el = document.getElementById("body");
 
             //    el.classList.remove("fade-out");
@@ -61,13 +60,6 @@ function mousePressed() {
 //}
 
 function draw() {
-    display();
-}
-
-
-
-
-function display() {
     background(255);
     fill(0);
     rect(200, 150, 50, 50);
@@ -75,6 +67,14 @@ function display() {
         dummies[i].show();
         dummies[i].move();
     }
+    playerMove();
+}
+
+
+
+
+function playerMove() {
+
 
     if (keyIsDown(RIGHT_ARROW)) {
         console.log('right');
@@ -86,6 +86,8 @@ function display() {
         console.log(dummies[dummies.length - 1]);
         dummies[dummies.length - 1].x -= random(3);
     }
+
+
 }
 
 //function mousePressed() {

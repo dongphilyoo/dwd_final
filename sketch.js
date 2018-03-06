@@ -34,18 +34,16 @@ function setup(){
         }
     );
 }
-
-// Receive from any event
-socket.on('chatmessage', function (data) {
-    console.log(data);
-    document.getElementById('messages').innerHTML = "" + data + 
-+ "" + document.getElementById('messages').innerHTML;
-});
-
-var sendmessage = function(message) {
-    console.log("chatmessage: " + message);
-    socket.emit('chatmessage', message);
-};
+function mousePressed() {
+    // Make a little object with mouseX and mouseY
+    var data = {
+        w: 30,
+        h: 30,
+        r: 30
+    };
+    // Send that object to the socket
+    socket.emit('mouse', data);
+}
 
 function draw(){
     background(255);
@@ -70,16 +68,7 @@ function draw(){
         console.log(dummies[dummies.length - 1]);
     }
 }
-function mousePressed() {
-    // Make a little object with mouseX and mouseY
-    var data = {
-        w: 30,
-        h: 30,
-        r: 30
-    };
-    // Send that object to the socket
-    socket.emit('mouse', data);
-}
+
 
 function fadeIn() {
     var el = document.getElementById("body");

@@ -18,19 +18,31 @@ function setup() {
     socket.on('mouse',
         function (data) {
             // Draw a blue circle
-            fill(0, 0, 255);
-            noStroke();
-            ellipse(data.x, data.y, 80, 80);
+//            fill(0, 0, 255);
+//            noStroke();
+//            ellipse(data.x, data.y, 80, 80);
+
+
+
+            var el = document.getElementById("body");
+
+            //    el.classList.remove("fade-out");
+
+            dummies.push(new Dummy(data.w, data.h, data.r));
+
+            el.classList.add("fade-out");
+            setTimeout(fadeIn, 100);
         }
     );
 }
 
 
-function mouseDragged() {
+function mousePressed() {
     // Make a little object with mouseX and mouseY
     var data = {
-        x: mouseX,
-        y: mouseY
+        w: 30,
+        h: 30,
+        r: 30
     };
     // Send that object to the socket
     socket.emit('mouse', data);
@@ -70,16 +82,16 @@ function draw() {
 }
 
 
-function mousePressed() {
-    var el = document.getElementById("body");
-
-    //    el.classList.remove("fade-out");
-
-    dummies.push(new Dummy(30, 30, 30));
-
-    el.classList.add("fade-out");
-    setTimeout(fadeIn, 100);
-}
+//function mousePressed() {
+//    var el = document.getElementById("body");
+//
+//    //    el.classList.remove("fade-out");
+//
+//    dummies.push(new Dummy(30, 30, 30));
+//
+//    el.classList.add("fade-out");
+//    setTimeout(fadeIn, 100);
+//}
 
 function fadeIn() {
     var el = document.getElementById("body");

@@ -1,16 +1,26 @@
 // HTTP Portion
-var http = require('http');
+var https = require('https');
 var fs = require('fs'); // Using the filesystem module
-var httpServer = http.createServer(requestHandler);
+
+var credentials = {
+  key: fs.readFileSync('my-key.pem'),
+  cert: fs.readFileSync('my-serve.pem')
+};
+
+var express = require('express');
+var osc = require('node-osc');
+var client = new osc.Client('127.0.0.1', 9000);
+var fs = require('fs'); // Using the filesystem module
 var url = require('url');
-httpServer.listen(2018);
+var app = module.exports.app = express();
+app.use(express.static(__dirname));
 
 function requestHandler(req, res) {
 
     var parsedUrl = url.parse(req.url);
     console.log("The Request is: " + parsedUrl.pathname);
-
-    fs.readFile(__dirname + parsedUrl.pathname,
+        
+    fs.readFile(__dirname + parsedUrl.pathname, 
         // Callback function for reading
         function (err, data) {
             // if there is an error
@@ -23,7 +33,7 @@ function requestHandler(req, res) {
             res.end(data);
         }
     );
-
+    
     /*
     res.writeHead(200);
     res.end("Life is wonderful");
@@ -33,28 +43,32 @@ function requestHandler(req, res) {
 
 // WebSocket Portion
 // WebSockets work with the HTTP server
-var io = require('socket.io').listen(httpServer);
+var httpsServer = https.createServer(credentials, app);
+var io = require('socket.io').listen(httpsServer);
 
 // Register a callback function to run when we have an individual connection
 // This is run for each individual user that connects
-io.sockets.on('connection',
+io.sockets.on('connection', 
     // We are given a websocket object in our function
     function (socket) {
-
+    
         console.log("We have a new client: " + socket.id);
-
+        
         // When this user emits, client side: socket.emit('otherevent',some data);
-        socket.on('chatmessage', function (data) {
+        socket.on('chatmessage', function(data) {
             // Data comes in as whatever was sent, including objects
             console.log("Received: 'chatmessage' " + data);
-
+            client.send('/word', data.word, function () {});
             // Send it to all of the clients
             socket.broadcast.emit('chatmessage', data);
         });
-
-
-        socket.on('disconnect', function () {
+        
+        
+        socket.on('disconnect', function() {
             console.log("Client has disconnected " + socket.id);
         });
     }
 );
+
+
+httpsServer.listen(1337);

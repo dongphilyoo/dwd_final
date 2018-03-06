@@ -1,140 +1,36 @@
-<html>
-    <head>
-        <meta http-equiv="refresh" content="300">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
-        <script src="p5.speech.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-        <script type="text/javascript">
-            var myRec = new p5.SpeechRec('en-US', parseResult); // new P5.SpeechRec object
-            myRec.continuous = true; // do continuous recognition
-            myRec.interimResults = true; // allow partial recognition (faster, less accurate)
-
-            var x, y;
-            var dx, dy;
-            
-
-            var dummies = [];
-            var xoff = 0.0;
-
-            var socket = io.connect();
-            function setup()
-            {
-                // graphics stuff:
-                createCanvas(innerWidth, innerHeight);
-                background(255, 255, 255);
-
-                for (var i = 0; i < 10; i++) {
-                    dummies[i] = new Dummy(30, 30, 30);
-                }
-
-                // instructions:
-                textSize(48);
-                textAlign(CENTER);
-
-                myRec.start(); // start engine
-
-                // client-side socket.io:
-                // socket = io();
-            }
-            
-            socket.on('connect', function() {
-                console.log("Connected");
-            });
-
-            // Receive from any event
-            socket.on('chatmessage', function (data) {
-                console.log(data);
-                document.getElementById('messages').innerHTML = "" + data + 
- + "" + document.getElementById('messages').innerHTML;
-            });
-            
-            var sendmessage = function(message) {
-                console.log("chatmessage: " + message);
-                socket.emit('chatmessage', message);
-            };
-            
-            function draw(){
-                background(255);
-                fill(0);
-                rect(200, 150, 50, 50);
-                for (var i = 0; i < dummies.length; i++) {
-                    dummies[i].show();
-                    dummies[i].move();
-                }
-
-                if (keyIsDown(RIGHT_ARROW)) {
-                    console.log('right');
-                    console.log(dummies[dummies.length - 1]);
-                    dummies[dummies.length - 1].x += random(3);
-                }
-                if (keyIsDown(LEFT_ARROW)) {
-                    console.log('left');
-                    console.log(dummies[dummies.length - 1]);
-                    dummies[dummies.length - 1].x -= random(3);
-                }
-
-                if (keyIsDown(ENTER)) {
-                    console.log(dummies[dummies.length - 1]);
-                }
-            }
-            function mousePressed() {
-                var el = document.getElementById("body");
-
-                //    el.classList.remove("fade-out");
-
-                dummies.push(new Dummy(30, 30, 30));
-
-                el.classList.add("fade-out");
-                setTimeout(fadeIn, 100);
-            }
-
-            function fadeIn() {
-                var el = document.getElementById("body");
-                el.classList.remove("fade-out");
-            }
-
-            function parseResult()
-            {
-                // recognition system will often append words into phrases.
-                var res = myRec.resultString;
-                console.log(res, '\t',dummies[dummies.length - 1]);
-                switch (res){
-                    case 'left':
-                        dummies[dummies.length - 1].x -= random(3);
-                        break;
-                    case 'right':
-                        dummies[dummies.length - 1].x += random(3);
-                        break;
-                    case 'kill':
-                        break;                    
-                }
-
-                // text(res, width/2, height/2);
-                socket.emit('result', { 'word': res });
-            }
-            class Dummy {
-            constructor(w, h, r) {
-                this.x = random(width);
-                this.w = w;
-                this.h = h + random(r);
-            }
-            show() {
-                fill(220, 30, 240, 120);
-                rect(this.x, height - (this.h + 1), this.w, this.h);
-            }
-            move() {
-                var xc = constrain(this.x, 0, width);
-                //        xoff = xoff + 0.01;
-                //        this.xoff = this.xoff + 0.01;
-                //        this.x = noise(this.xoff) * width;
-                this.x = xc + random(-6, 6);
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="refresh" content="300" charset="UTF-8">
+    <title>DWD Final Project</title>
+    <style>
+        *,
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
-    
-        </script>   
-    </head>
- <body>
- </body>
+
+        body {
+            opacity: 1;
+            transition: 2s opacity;
+        }
+
+        body.fade-out {
+            opacity: 0;
+            transition: none;
+        }
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.sound.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
+    <script src="p5.speech.js"></script>
+    <script src="sketch.js"></script>
+</head>
+<body id="body">
+</body>
 </html>
         

@@ -1,15 +1,52 @@
+var myRec = new p5.SpeechRec('en-US', parseResult); // new P5.SpeechRec object
+myRec.continuous = true; // do continuous recognition
+myRec.interimResults = true; // allow partial recognition (faster, less accurate)
+
+var x, y;
+var dx, dy;
+
+
 var dummies = [];
 var xoff = 0.0;
 
-function setup() {
+var socket;// = io.connect();
+function setup(){
     createCanvas(innerWidth, innerHeight);
-    //        frameRate(10);
+    background(255, 255, 255);
     for (var i = 0; i < 10; i++) {
         dummies[i] = new Dummy(30, 30, 30);
     }
-}
+    socket = io.connect('https://67.207.89.207:1337');
+    // instructions:
+    textSize(48);
+    textAlign(CENTER);
 
-function draw() {
+    myRec.start(); // start engine
+
+    socket.on('mouse',
+        function (data) {
+            var el = document.getElementById("body");
+
+            //    el.classList.remove("fade-out");
+
+            dummies.push(new Dummy(data.w, data.h, data.r));
+
+            el.classList.add("fade-out");
+            setTimeout(fadeIn, 100);
+        }
+    );
+}
+function mousePressed() {
+    // Make a little object with mouseX and mouseY
+    var data = {
+        w: 30,
+        h: 30,
+        r: 30
+    };
+    // Send that object to the socket
+    socket.emit('mouse', data);
+}
+function draw(){
     background(255);
     fill(0);
     rect(200, 150, 50, 50);
@@ -28,43 +65,36 @@ function draw() {
         console.log(dummies[dummies.length - 1]);
         dummies[dummies.length - 1].x -= random(3);
     }
+    if (keyIsDown(ENTER)) {
+        console.log(dummies[dummies.length - 1]);
+    }
 }
 
-
-function mousePressed() {
-    var el = document.getElementById("body");
-
-    //    el.classList.remove("fade-out");
-
-    dummies.push(new Dummy(30, 30, 30));
-
-    el.classList.add("fade-out");
-    setTimeout(fadeIn, 100);
-}
 
 function fadeIn() {
     var el = document.getElementById("body");
     el.classList.remove("fade-out");
 }
 
-//var xoff = 0.0;
-//
-//function draw() {
-//    background(204);
-//    xoff = xoff + 0.01;
-//    var n = noise(xoff) * width;
-//    line(n, 0, n, height);
-//}
+function parseResult()
+{
+    // recognition system will often append words into phrases.
+    var res = myRec.resultString;
+    console.log(res, '\t',dummies[dummies.length - 1]);
+    switch (res){
+        case 'left':
+            dummies[dummies.length - 1].x -= random(3);
+            break;
+        case 'right':
+            dummies[dummies.length - 1].x += random(3);
+            break;
+        case 'kill':
+            break;                    
+    }
 
-//function movement() {
-//    if (r >= 255) {
-//        r = 0;
-//    } else {
-//        r = r + 30;
-//    }
-//    setTimeout(rChange, 450);
-//}
-
+    // text(res, width/2, height/2);
+    socket.emit('result', { 'word': res });
+}
 class Dummy {
     constructor(w, h, r) {
         this.x = random(width);

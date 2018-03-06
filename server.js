@@ -55,13 +55,15 @@ io.sockets.on('connection',
         console.log("We have a new client: " + socket.id);
         
         // When this user emits, client side: socket.emit('otherevent',some data);
-        socket.on('chatmessage', function(data) {
-            // Data comes in as whatever was sent, including objects
-            console.log("Received: 'chatmessage' " + data);
-            client.send('/word', data.word, function () {});
-            // Send it to all of the clients
-            socket.broadcast.emit('chatmessage', data);
-        });
+        socket.on('mouse',
+            function (data) {
+                // Data comes in as whatever was sent, including objects
+                console.log("Received: 'mouse' " + data.w + " " + data.h + " " + data.r);
+                // Send it to all other clients
+                client.send('/word', data.word, function () {});
+                socket.broadcast.emit('mouse', data);
+            }
+        );
         
         
         socket.on('disconnect', function() {

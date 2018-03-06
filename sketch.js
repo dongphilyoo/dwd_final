@@ -36,16 +36,16 @@ function setup(){
         }
     );
 }
-function mousePressed() {
-    // Make a little object with mouseX and mouseY
-    var data = {
-        w: 30,
-        h: 30,
-        r: 30
-    };
-    // Send that object to the socket
-    socket.emit('mouse', data);
-}
+// function mousePressed() {
+//     // Make a little object with mouseX and mouseY
+//     var data = {
+//         w: 30,
+//         h: 30,
+//         r: 30
+//     };
+//     // Send that object to the socket
+//     socket.emit('mouse', data);
+// }
 function draw(){
     background(255);
     fill(0);

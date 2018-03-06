@@ -18,9 +18,9 @@ function setup() {
     socket.on('mouse',
         function (data) {
             // Draw a blue circle
-//            fill(0, 0, 255);
-//            noStroke();
-//            ellipse(data.x, data.y, 80, 80);
+            //            fill(0, 0, 255);
+            //            noStroke();
+            //            ellipse(data.x, data.y, 80, 80);
 
 
 
@@ -61,6 +61,13 @@ function mousePressed() {
 //}
 
 function draw() {
+    display();
+}
+
+
+
+
+function display() {
     background(255);
     fill(0);
     rect(200, 150, 50, 50);
@@ -80,7 +87,6 @@ function draw() {
         dummies[dummies.length - 1].x -= random(3);
     }
 }
-
 
 //function mousePressed() {
 //    var el = document.getElementById("body");

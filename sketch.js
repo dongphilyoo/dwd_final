@@ -1,13 +1,52 @@
 var dummies = [];
 var xoff = 0.0;
 
+
+var socket;
+
 function setup() {
     createCanvas(innerWidth, innerHeight);
     //        frameRate(10);
     for (var i = 0; i < 10; i++) {
         dummies[i] = new Dummy(30, 30, 30);
     }
+
+
+    socket = io.connect('http://45.55.233.15:2018');
+    // We make a named event called 'mouse' and write an
+    // anonymous callback function
+    socket.on('mouse',
+        function (data) {
+            // Draw a blue circle
+            fill(0, 0, 255);
+            noStroke();
+            ellipse(data.x, data.y, 80, 80);
+        }
+    );
 }
+
+
+function mouseDragged() {
+    // Make a little object with mouseX and mouseY
+    var data = {
+        x: mouseX,
+        y: mouseY
+    };
+    // Send that object to the socket
+    socket.emit('mouse', data);
+}
+
+
+
+
+
+//function setup() {
+//    createCanvas(innerWidth, innerHeight);
+//    //        frameRate(10);
+//    for (var i = 0; i < 10; i++) {
+//        dummies[i] = new Dummy(30, 30, 30);
+//    }
+//}
 
 function draw() {
     background(255);

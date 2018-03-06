@@ -33,26 +33,7 @@
 
 <body id="body">
 
-    <script>
-        var socket = io.connect();
-
-        socket.on('connect', function() {
-            console.log("Connected");
-        });
-
-        // Receive from any event
-        socket.on('mouse', function(data) {
-            console.log(data);
-            document.getElementById('messages').innerHTML = "" + data +
-                +"" + document.getElementById('messages').innerHTML;
-        });
-
-        var sendmessage = function(message) {
-            console.log("chatmessage: " + message);
-            socket.emit('mouse', message);
-        };
-
-    </script>
+    
 
     <div id="messages">
         No Messages Yet

@@ -80,13 +80,13 @@ function parseResult()
 {
     // recognition system will often append words into phrases.
     var res = myRec.resultString;
-    console.log(res, '\t',dummies[dummies.length - 1]);
+    
     switch (res){
         case 'left':
-            dummies[dummies.length - 1].x -= random(3);
+            dummies[dummies.length - 1].x -= random(10);
             break;
         case 'right':
-            dummies[dummies.length - 1].x += random(3);
+            dummies[dummies.length - 1].x += random(10);
             break;
         case 'kill':
             break;                    
@@ -94,6 +94,7 @@ function parseResult()
 
     // text(res, width/2, height/2);
     socket.emit('result', { 'word': res });
+    console.log(res, '\t',dummies[dummies.length - 1]);
 }
 class Dummy {
     constructor(w, h, r) {

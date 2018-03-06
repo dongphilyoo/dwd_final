@@ -12,7 +12,7 @@ function setup() {
     }
 
 
-    socket = io.connect('http://45.55.233.15:2018/index.html');
+    socket = io.connect('http://45.55.233.15:2018');
     // We make a named event called 'mouse' and write an
     // anonymous callback function
     socket.on('mouse',

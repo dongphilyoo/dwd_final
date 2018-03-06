@@ -55,6 +55,7 @@ io.sockets.on('connection',
         console.log("We have a new client: " + socket.id);
         
         // When this user emits, client side: socket.emit('otherevent',some data);
+<<<<<<< HEAD
         socket.on('chatmessage', function(data) {
             // Data comes in as whatever was sent, including objects
             console.log("Received: 'chatmessage' " + data);
@@ -65,6 +66,19 @@ io.sockets.on('connection',
         
         
         socket.on('disconnect', function() {
+=======
+        socket.on('mouse',
+            function (data) {
+                // Data comes in as whatever was sent, including objects
+                console.log("Received: 'mouse' " + data.w + " " + data.h + " " + data.r);
+                // Send it to all other clients
+                socket.broadcast.emit('mouse', data);
+            }
+        );
+
+
+        socket.on('disconnect', function () {
+>>>>>>> phil
             console.log("Client has disconnected " + socket.id);
         });
     }

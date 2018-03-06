@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <html>
     <head>
         <meta http-equiv="refresh" content="300">
@@ -9,6 +10,22 @@
             var myRec = new p5.SpeechRec('en-US', parseResult); // new P5.SpeechRec object
             myRec.continuous = true; // do continuous recognition
             myRec.interimResults = true; // allow partial recognition (faster, less accurate)
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DWD Final Project</title>
+    <style>
+        *,
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+>>>>>>> phil
 
             var x, y;
             var dx, dy;
@@ -32,6 +49,7 @@
                 textSize(48);
                 textAlign(CENTER);
 
+<<<<<<< HEAD
                 myRec.start(); // start engine
 
                 // client-side socket.io:
@@ -82,6 +100,16 @@
                 var el = document.getElementById("body");
 
                 //    el.classList.remove("fade-out");
+=======
+
+<!--
+    <div id="messages">
+        No Messages Yet
+    </div>
+    <input type="text" id="message" name="message">
+    <input type="submit" value="submit" onclick="sendmessage(document.getElementById('message').value);">
+-->
+>>>>>>> phil
 
                 dummies.push(new Dummy(30, 30, 30));
 

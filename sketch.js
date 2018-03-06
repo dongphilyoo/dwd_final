@@ -1,13 +1,65 @@
 var dummies = [];
 var xoff = 0.0;
 
+
+var socket;
+
 function setup() {
     createCanvas(innerWidth, innerHeight);
     //        frameRate(10);
     for (var i = 0; i < 10; i++) {
         dummies[i] = new Dummy(30, 30, 30);
     }
+
+
+    socket = io.connect('http://45.55.233.15:2018');
+    
+    console.log(socket.id);
+    // We make a named event called 'mouse' and write an
+    // anonymous callback function
+    socket.on('mouse',
+        function (data) {
+            // Draw a blue circle
+            //            fill(0, 0, 255);
+            //            noStroke();
+            //            ellipse(data.x, data.y, 80, 80);
+
+
+            var el = document.getElementById("body");
+
+            //    el.classList.remove("fade-out");
+
+            dummies.push(new Dummy(data.w, data.h, data.r));
+
+            el.classList.add("fade-out");
+            setTimeout(fadeIn, 100);
+        }
+    );
 }
+
+
+function mousePressed() {
+    // Make a little object with mouseX and mouseY
+    var data = {
+        w: 30,
+        h: 30,
+        r: 30
+    };
+    // Send that object to the socket
+    socket.emit('mouse', data);
+}
+
+
+
+
+
+//function setup() {
+//    createCanvas(innerWidth, innerHeight);
+//    //        frameRate(10);
+//    for (var i = 0; i < 10; i++) {
+//        dummies[i] = new Dummy(30, 30, 30);
+//    }
+//}
 
 function draw() {
     background(255);
@@ -17,6 +69,14 @@ function draw() {
         dummies[i].show();
         dummies[i].move();
     }
+    playerMove();
+}
+
+
+
+
+function playerMove() {
+
 
     if (keyIsDown(RIGHT_ARROW)) {
         console.log('right');
@@ -28,19 +88,20 @@ function draw() {
         console.log(dummies[dummies.length - 1]);
         dummies[dummies.length - 1].x -= random(3);
     }
+
+
 }
 
-
-function mousePressed() {
-    var el = document.getElementById("body");
-
-    //    el.classList.remove("fade-out");
-
-    dummies.push(new Dummy(30, 30, 30));
-
-    el.classList.add("fade-out");
-    setTimeout(fadeIn, 100);
-}
+//function mousePressed() {
+//    var el = document.getElementById("body");
+//
+//    //    el.classList.remove("fade-out");
+//
+//    dummies.push(new Dummy(30, 30, 30));
+//
+//    el.classList.add("fade-out");
+//    setTimeout(fadeIn, 100);
+//}
 
 function fadeIn() {
     var el = document.getElementById("body");

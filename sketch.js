@@ -83,10 +83,10 @@ function parseResult()
     
     switch (res){
         case 'left':
-            dummies[dummies.length - 1].x -= random(10);
+            dummies[dummies.length - 1].x -= random(5,10);
             break;
         case 'right':
-            dummies[dummies.length - 1].x += random(10);
+            dummies[dummies.length - 1].x += random(5,10);
             break;
         case 'kill':
             break;                    
@@ -111,6 +111,6 @@ class Dummy {
         //        xoff = xoff + 0.01;
         //        this.xoff = this.xoff + 0.01;
         //        this.x = noise(this.xoff) * width;
-        this.x = xc + random(-6, 6);
+        //this.x = xc + random(-6, 6);
     }
 }

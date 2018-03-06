@@ -11,7 +11,6 @@ var xoff = 0.0;
 
 var socket;// = io.connect();
 function setup(){
-    // graphics stuff:
     createCanvas(innerWidth, innerHeight);
     background(255, 255, 255);
     for (var i = 0; i < 10; i++) {
@@ -23,9 +22,12 @@ function setup(){
     textAlign(CENTER);
 
     myRec.start(); // start engine
+
     socket.on('mouse',
         function (data) {
             var el = document.getElementById("body");
+
+            //    el.classList.remove("fade-out");
 
             dummies.push(new Dummy(data.w, data.h, data.r));
 
@@ -34,24 +36,21 @@ function setup(){
         }
     );
 }
-
-// Receive from any event
-socket.on('chatmessage', function (data) {
-    console.log(data);
-    document.getElementById('messages').innerHTML = "" + data + 
-+ "" + document.getElementById('messages').innerHTML;
-});
-
-var sendmessage = function(message) {
-    console.log("chatmessage: " + message);
-    socket.emit('chatmessage', message);
-};
-
+function mousePressed() {
+    // Make a little object with mouseX and mouseY
+    var data = {
+        w: 30,
+        h: 30,
+        r: 30
+    };
+    // Send that object to the socket
+    socket.emit('mouse', data);
+}
 function draw(){
     background(255);
     fill(0);
     rect(200, 150, 50, 50);
-    for (var i = 0; i < dummies.length; i++){
+    for (var i = 0; i < dummies.length; i++) {
         dummies[i].show();
         dummies[i].move();
     }
@@ -70,16 +69,7 @@ function draw(){
         console.log(dummies[dummies.length - 1]);
     }
 }
-function mousePressed() {
-    // Make a little object with mouseX and mouseY
-    var data = {
-        w: 30,
-        h: 30,
-        r: 30
-    };
-    // Send that object to the socket
-    socket.emit('mouse', data);
-}
+
 
 function fadeIn() {
     var el = document.getElementById("body");

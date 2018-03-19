@@ -7,3 +7,5 @@ This project has a form of multiplayer game and it runs on Node.js + Express + S
 ### Challenges
 ### Expectation
 ### Conclusion
+
+![stack Overflow](http://lmsotfy.com/so.png)
